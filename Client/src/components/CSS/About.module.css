@@ -1,0 +1,23 @@
+.about{
+  margin: 120px auto;
+  color: white;
+}
+
+.about > div{
+  width: max-content;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 10px auto;
+  border: solid;
+  background-image: url('../../assets/fondos/card/name.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  opacity: 0.8;
+}
+
+img{
+  width: 400px;
+  height: 400px;
+  border-radius: 120px;
+  margin: 0 auto;
+}

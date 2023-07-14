@@ -1,0 +1,39 @@
+.navsearch{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  padding: 10px;
+  height: max-content;
+  margin-bottom: 10px;
+  z-index: 2;
+  width: 100%;
+  align-items: center;
+}
+
+.scrolled{
+  background-image: url('../../assets/fondos/card/name.jpg');
+  background-size: 100% 100%;
+  background-repeat:no-repeat;
+  background-size: cover;
+  opacity: 0.9;
+  transition: 0.5ms;
+}
+
+
+.btnRandom{
+  background-image: url('../../assets/fondos/card/name.jpg');
+  background-size: 100% 100%;
+  background-repeat:no-repeat;
+  background-size: cover;
+  padding: 5px;
+  height: 40px;
+  width: 110px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: white;
+  font-weight: bold;
+  margin: 0px auto;
+  
+}
