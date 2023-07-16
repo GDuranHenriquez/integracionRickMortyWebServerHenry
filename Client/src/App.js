@@ -57,11 +57,10 @@ function App() {
          return alert(`Este personaje con id:${id} se encuentra ya agregado.`)
       }         
       
-      axios(`http://localhost:3001/rickandmorty/character/:${id}`).then(({ data }) =>{  
-      if (data.length > 0) {
-            setCharacters((characters) => [...characters, data[0]]);
-         } else {
-          alert('¡No hay personajes con este ID!');
+      axios(`http://localhost:3001/rickandmorty/onSearch/${id}`).then(( {data} ) =>{
+           
+         if ( Object.keys(data).length  > 0) {
+            setCharacters((characters) => [...characters, data]);
          }
       }).catch((e) => {
          alert('¡No hay personajes con este ID!');
@@ -85,7 +84,6 @@ function App() {
     }, []);
 
    const onClose = (id) =>{
-      id = parseInt(id)
       const newCharacters = characters.filter(character => character.id !== id);
       setCharacters(newCharacters)
 

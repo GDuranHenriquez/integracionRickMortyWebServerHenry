@@ -147,7 +147,7 @@ function Card(props){
       function handleFavorite(){
          if(isFav){
             setIsFav(false);
-            props.removeFavorite(Number(id))
+            props.removeFavorite(data.id)
          }else{
             setIsFav(true);
             props.addFavorite(data)
@@ -163,11 +163,11 @@ function Card(props){
       }, [props.myFavorites]);
 
       function onCloseANDFavorite(idCharacter){
-         data.onClose(idCharacter);
          if(isFav){
             setIsFav(false);
-            props.removeFavorite(Number(idCharacter))
+            props.removeFavorite(idCharacter);
          }
+         props.onClose(idCharacter);
       }
 
       return (
@@ -178,7 +178,8 @@ function Card(props){
                   <button onClick={handleFavorite}  className="btnFavorite">🤍</button>
                )}
 
-            <button onClick={() => {onCloseANDFavorite(data.id)}} className="btnRemoveCard">X</button>
+            <button onClick={() => {onCloseANDFavorite(props.id)}} className="btnRemoveCard">X</button>
+
             <div className="name-person" style= {{backgroundImage: `url(${imgBackName})`}}>
                <Link to={`/detail/${id}`} className="link">
                   <h3>{data.name}</h3>         
