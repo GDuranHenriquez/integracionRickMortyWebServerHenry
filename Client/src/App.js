@@ -48,31 +48,54 @@ function App() {
       }
    } */
 
-   function login(userData) {
-      const { email, password } = userData;
+   async function login(userData) {
+      try {
+         const { email, password } = userData;
+         const URL = "http://localhost:3001/rickandmorty/user/login/";
+         const { data } = await axios(URL + `?email=${email}&password=${password}`);
+         const { access } = data;
+         setAccess(data);
+         if(access) navigate('/home')
+         else alert("User or password incorret");
+           
+      } catch (axiosError) {
+         alert(axiosError.message);
+      }
+      /* const { email, password } = userData;
       const URL = "http://localhost:3001/rickandmorty/user/login/";
       axios(URL + `?email=${email}&password=${password}`).then(({ data }) => {
          const { access } = data;
          setAccess(data);
          access && navigate('/home');
-      });
+      }); */
    }
 
-   const onSearch = (id) =>{
-      id = Number(id);
-      const repetido = characters.filter(character => character.id === id);
-      if(repetido.length > 0){
-         return alert(`Este personaje con id:${id} se encuentra ya agregado.`)
-      }         
+   const onSearch = async (id) =>{      
+         try {
+            id = Number(id);
+            const repetido = characters.filter(character => character.id === id);
+            if(repetido.length > 0){
+               return alert(`Este personaje con id:${id} se encuentra ya agregado.`)
+            };
+
+            const { data } = await axios(`http://localhost:3001/rickandmorty/character/${id}`);
+            if ( Object.keys(data).length  > 0) {
+               setCharacters((characters) => [...characters, data]);
+            }else{
+               alert('¡No hay personajes con este ID!');
+            };
+      } catch (axiosError) {
+         alert(axiosError.message);
+      }
       
-      axios(`http://localhost:3001/rickandmorty/character/${id}`).then(( {data} ) =>{
+      /* axios(`http://localhost:3001/rickandmorty/character/${id}`).then(( {data} ) =>{
            
          if ( Object.keys(data).length  > 0) {
             setCharacters((characters) => [...characters, data]);
          }
       }).catch((e) => {
          alert('¡No hay personajes con este ID!');
-      });
+      }); */
    };
 
    useEffect(() => {

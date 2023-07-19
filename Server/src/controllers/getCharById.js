@@ -28,10 +28,30 @@ const axios = require('axios');
 
 const url = 'https://rickandmortyapi.com/api/character/';
 
-function getCharById(req, res){
-  const { id } = req.params;
+async function getCharById(req, res){
+  try {
+    const { id } = req.params;
+    const { data } = await axios(`${url}${id}`);
+    if(data.error){
+      return res.status(404).send(data.error);
+    };
+    const { name, status, species, origin, image, gender } = data;
+    const character = {
+      id: Number(id),
+      name,
+      status,
+      species,
+      origin, // Enviamos el objecto "origin" porque el front lo espera
+      image,
+      gender,
+    };
+    return res.status(200).json(character);
+    
+  } catch (axiosError) {
+    return res.status(500).send(axiosError.message);
+  } 
 
-  axios(`${url}${id}`).then(({data}) =>{
+  /* axios(`${url}${id}`).then(({data}) =>{
     if(data.error){
       return res.status(404).send(data.error);
     };
@@ -52,7 +72,7 @@ function getCharById(req, res){
   }).catch((error) => {
     // Si hay un error debes responder con un status 500, y un texto con la propiedad message de error.
     return res.status(500).send(axiosError.message);
-  });
+  }); */
 };
 
 module.exports = {
