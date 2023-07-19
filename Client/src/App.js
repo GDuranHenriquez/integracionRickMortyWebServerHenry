@@ -38,26 +38,34 @@ function App() {
    const [access, setAccess] = useState(false);
 
    const navigate = useNavigate();
-   const EMAIL = 'gregorioduran123@gmail.com';
-   const PASSWORD = 'gregorio1';
 
-   const login = (userData)=>{
+   /* const login = (userData)=>{
       if (userData.password === PASSWORD && userData.email === EMAIL) {
          setAccess(true);
          navigate('/home');
       }else{
          alert('Email or Password incorrect')
       }
+   } */
+
+   function login(userData) {
+      const { email, password } = userData;
+      const URL = "http://localhost:3001/rickandmorty/user/login/";
+      axios(URL + `?email=${email}&password=${password}`).then(({ data }) => {
+         const { access } = data;
+         setAccess(data);
+         access && navigate('/home');
+      });
    }
 
    const onSearch = (id) =>{
-      id = parseInt(id);
+      id = Number(id);
       const repetido = characters.filter(character => character.id === id);
       if(repetido.length > 0){
          return alert(`Este personaje con id:${id} se encuentra ya agregado.`)
       }         
       
-      axios(`http://localhost:3001/rickandmorty/onSearch/${id}`).then(( {data} ) =>{
+      axios(`http://localhost:3001/rickandmorty/character/${id}`).then(( {data} ) =>{
            
          if ( Object.keys(data).length  > 0) {
             setCharacters((characters) => [...characters, data]);

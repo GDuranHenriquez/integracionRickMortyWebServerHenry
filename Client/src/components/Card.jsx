@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import imgBackName from '../assets/fondos/card/name.jpg'
-import imgBackData from '../assets/fondos/card/data.jpg' 
+import imgBackData from '../assets/fondos/card/data.jpg'
+import { useDispatch, useSelector } from "react-redux"; 
 import { Link } from "react-router-dom";
 import { addFavorite, removeFavorite } from "../redux/actions/actions";
 import { connect } from "react-redux"; 
@@ -141,26 +142,29 @@ function Card(props){
       image: props.image,
       onClose: props.onClose};
 
+      const dispatch = useDispatch(); // CREO UN DISPATCH
+      const myFavorites = useSelector((state) => state.myFavorites); // ME TRAIGO "favorites" DEL GLOBAL
+
       const id = data.id;
       const [isFav, setIsFav] = useState(false);
 
       function handleFavorite(){
          if(isFav){
             setIsFav(false);
-            props.removeFavorite(data.id)
+            dispatch(removeFavorite(data.id))
          }else{
             setIsFav(true);
-            props.addFavorite(data)
+            dispatch(addFavorite(data))
          }
       };
 
       useEffect(() => {
-         props.myFavorites.forEach((fav) => {
-            if (fav.id === props.id) {
+         myFavorites.forEach((fav) => {
+            if (fav.id === id) {
                setIsFav(true);
             }
          });
-      }, [props.myFavorites]);
+      }, [myFavorites]);
 
       function onCloseANDFavorite(idCharacter){
          if(isFav){

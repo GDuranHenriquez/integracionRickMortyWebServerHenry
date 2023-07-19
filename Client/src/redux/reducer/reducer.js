@@ -5,17 +5,16 @@ const initialGlobalState = {
   allCharacters: [],
   access: false,
   aunMas: [],
-  sesion: {user: 'gregorioduran123@gmail.com', pass: 'gregorio1'},
 }
 
 export default function rootReducer(state = initialGlobalState, action){
   //Nos fijamos por el type de la accion.
   switch(action.type){
     case ADD_FAV:
-      var copy = [...state.allCharacters, action.payload]
-      return {...state, myFavorites:copy,  allCharacters: [...copy] };
+      return {...state, myFavorites:action.payload,  allCharacters: action.payload };
     case REMOVE_FAV:
-      return {...state, myFavorites: state.myFavorites.filter(fav => fav.id !== action.payload),  allCharacters: state.allCharacters.filter(fav => fav.id !== action.payload)};
+      return {...state, myFavorites: action.payload, allCharacters: action.payload };
+      /* state.myFavorites.filter(fav => fav.id !== action.payload),  allCharacters: state.allCharacters.filter(fav => fav.id !== action.payload) */
     case FILTER:
       return {...state, myFavorites: state.allCharacters.filter(pj => pj.gender === action.payload)};
     case ORDER:

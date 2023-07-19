@@ -8,7 +8,8 @@ const Detail = ()=>{
   const [detail, setDetail] = useState({});
 
   useEffect(() => {
-    axios(`http://localhost:3001/rickandmorty/onSearch/${id}`).then(({ data }) => { 
+
+    axios(`http://localhost:3001/rickandmorty/character/${id}`).then(({ data }) => { 
       if (Object.keys(data).length > 0) {
           setDetail(data);
        } else {
@@ -20,7 +21,8 @@ const Detail = ()=>{
     return setDetail({});
  }, [id]);
  /* const { url } = character.origin; */
-   
+
+ if(Object.keys(detail).length > 0){
   return (<div className={StyledDetail.container}>
     <div className={StyledDetail.divData}>
       <section className={StyledDetail.dataPerson}>
@@ -36,6 +38,11 @@ const Detail = ()=>{
       <img src={detail.image} alt={detail.name} />
     </div>
   </div>)
+ }else{
+  return <></>
+ }
+   
+  
 }
 
 export default Detail;

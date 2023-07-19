@@ -1,29 +1,58 @@
-const http = require('http');
-const { getCharById } = require('./controllers/getCharById');
-/* const data = require('./utils/data'); */
-const dotenv = require('dotenv');
-dotenv.config();
+require("dotenv").config(); // Agrega al objeto "process" en la prop "env" nuestras variables.
+//Variables de entorno
 const { PORT } = process.env;
+const morgan = require("morgan");
+const cors = require("cors");
 
-//http://localhost:3001/rickandmorty/onsearch/id
-http.createServer(function(req, res){
-  res.setHeader('Access-Control-Allow-Origin', '*'); //Cors --> Le damos acceso a todos
-  /* if(req.url.includes("/rickandmorty/character")){
-    var id = req.url.split('/');
-    id = id.pop();
-    id = id.split(':')[1];
-    const character = data.filter(element => element.id === parseInt(id));
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify(character));
-    
-  } */
+//Routers
+const characterRouter = require("./routes/character");
+const userRouter = require("./routes/user");
+const favRoutes = require("./routes/favorites");
 
-  if(req.url.includes('onSearch')){
-    let id = req.url.split('/');
-    id = id.pop();
-    //id = id.split(':')[1];
-    return getCharById(res, id);
-  };
-}).listen(PORT, () => {
-  console.log('Running on http://localhost:3001');
+//Express
+const express = require('express');
+//Creando el servidor
+const server = express();
+
+// Permisos -> Cors
+/* server.use((req, res, next) => {
+   res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Credentials', 'true');
+   res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+   );
+   res.header(
+      'Access-Control-Allow-Methods',
+      'GET, POST, OPTIONS, PUT, DELETE'
+   );
+   next();
+}); */
+
+
+// Middlewars
+server.use(express.json()); // para poder recibir JSON por req.body
+server.use((req, res, next) =>{
+   // Agregamos la cadena "/rickandmorty" antes de cada una de las rutas.
+   req = "/rickandmorty" + req.url;
+   //Continuamos con la siguiente función.
+   next();
+   console.log(req.headers)
 });
+server.use(morgan("dev")); // Me muestra en consola como sale la REQ y la RES
+server.use(cors()); // Habilito las CORS para que cualquier origen pueda enviar solicitud a mi servidor
+
+
+// Routers --> Que rutas voy a usar
+server.use("/rickandmorty/character", characterRouter);
+server.use("/rickandmorty/user", userRouter);
+server.use("/rickandmorty/favorites", favRoutes);
+
+server.get("/health-check", (req, res) => {
+   res.send("Working");
+ });
+
+server.listen(PORT, () => {
+   console.log('Server raised in port: ' + PORT);
+});
+ 
