@@ -32,13 +32,13 @@ const server = express();
 
 // Middlewars
 server.use(express.json()); // para poder recibir JSON por req.body
-server.use((req, res, next) =>{
+/* server.use((req, res, next) =>{
    // Agregamos la cadena "/rickandmorty" antes de cada una de las rutas.
    req = "/rickandmorty" + req.url;
    //Continuamos con la siguiente función.
    next();
    console.log(req.headers)
-});
+}); */
 server.use(morgan("dev")); // Me muestra en consola como sale la REQ y la RES
 server.use(cors()); // Habilito las CORS para que cualquier origen pueda enviar solicitud a mi servidor
 

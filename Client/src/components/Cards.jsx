@@ -1,5 +1,6 @@
 import Card from './Card';
 import styled from "styled-components";
+import { useSelector } from 'react-redux';
 
 const DivContainer = styled.div`
    max-width: 80%;
@@ -16,10 +17,13 @@ const DivContainer = styled.div`
 `
 
 export default function Cards(props) {
+
+   const  allCharacters  = useSelector((state) => state.allCharacters)
+
    return <DivContainer>
       
-      {props.characters.map((elem) => 
-         (<Card
+      { allCharacters.map((elem) => 
+          (<Card
             key ={elem.id}
             id = {elem.id}
             name={elem.name}

@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import imgBackName from '../assets/fondos/card/name.jpg'
-import { useRef, useState } from "react";
-import { Link, NavLink } from 'react-router-dom'
-import imgData from '../assets/fondos/card/data.jpg'
-
+import imgBackName from '../assets/fondos/card/name.jpg';
+import { useEffect, useRef, useState } from "react";
+import { Link } from 'react-router-dom';
+import imgData from '../assets/fondos/card/data.jpg';
+import { useSelector, useDispatch } from "react-redux";
+import { Access } from '../redux/actions/actions';
+import { useNavigate } from "react-router-dom";
 
 const DivSearchBar = styled.div`
    border: 2px solid withe;
@@ -16,6 +18,9 @@ const DivSearchBar = styled.div`
    align-items: center;
    justify-content: space-between;
    box-shadow: 0px 0px 8px 8px rgba(255, 255, 255, 0.6);
+   #addCharacter{
+      display: none;
+   }
    .active{
       background-image: url(${imgData});
    }
@@ -30,6 +35,24 @@ const DivSearchBar = styled.div`
    .divNavigate{
       gap: 15px;
    }
+   .logout{
+      button{
+         background-color: #c7c04a;
+         font-size: 13px;
+         font-weight: bold;
+         padding: 5px;
+         margin-left: 10px;
+         padding: 10px;
+         border-radius: 10px;
+         height: 35px;
+         width: 90px;
+         color: black;
+         font-family: Verdana, Geneva, Tahoma, sans-serif;
+         &:hover{
+            box-shadow: 0px 0px 8px 8px rgba(136, 78, 78, 1);
+         }         
+      };
+   }
 `
 const InpSearch = styled.input`
    padding: 8px;
@@ -43,10 +66,10 @@ const BtnSearch = styled.button`
    font-weight: bold;
    padding: 5px;
    margin-left: 10px;
-   pading: 10px;
+   padding: 10px;
    border-radius: 10px;
    height: 35px;
-   width: 70px;
+   width: max-content;
    color: white;
    /* border: none; */
    
@@ -66,15 +89,18 @@ const BtnAddRamdon = styled.button`
    color: white;
    font-weight: bold;
    margin-left: 10px;
+   &:hover{
+      box-shadow: 0px 0px 8px 8px rgba(255, 255, 255, 0.6);
+   }
 `
 const NavbarLink = styled(Link)`
    background-image: url(${imgBackName});
    background-size: 100% 100%;
    background-repeat:no-repeat;
    background-size: cover;
-   padding: 5px;
-   height: 25px;
-   width: 70px;
+   padding: 8px;
+   height: max-content;
+   width: max-content;
    text-decoration: none;
    border-radius: 10px;
    font-size: 13px;
@@ -90,6 +116,10 @@ const NavbarLink = styled(Link)`
 
 export default function SearchBar(props) {
 
+   const dispatch = useDispatch(); // CREO UN DISPATCH
+   const navigate = useNavigate();
+   const access = useSelector((state) => state.access);
+
    const [id, setId] = useState('');
    const inpSearchRef = useRef(null);
 
@@ -99,7 +129,14 @@ export default function SearchBar(props) {
    };
    const handleClick = () => {
       inpSearchRef.current.focus();
-    };
+   };
+   const handleLogout = () =>{
+     dispatch(Access(false));
+   };
+
+   useEffect(() =>{
+      !access && navigate('/');
+   }, [access])
 
    return (
       <DivSearchBar className = 'search-box'>
@@ -109,7 +146,7 @@ export default function SearchBar(props) {
 
             <NavbarLink to='/home' className={({ isActive}) => isActive ? "active" : undefined} >HOME</NavbarLink>
 
-            <NavbarLink to='/create' className={({ isActive}) => isActive ? "active" : undefined} >ADD CHARACTER</NavbarLink>
+            <NavbarLink to='/create' className={({ isActive}) => isActive ? "active" : undefined} id= 'addCharacter' >ADD CHARACTER</NavbarLink>
 
             <NavbarLink to='/favorites' className={({ isActive}) => isActive ? "active" : undefined} >FAVORITES</NavbarLink>
          </div>        
@@ -120,6 +157,9 @@ export default function SearchBar(props) {
             <BtnSearch onClick={() => {props.onSearch(id); setId(""); handleClick()}} style= {{backgroundImage: `url(${imgBackName})`}}>Agregar</BtnSearch>
 
             <BtnAddRamdon style= {{backgroundImage: `url(${imgBackName})`}} onClick = {()=> {props.addCardRandom()}}>AGREGAR ALEATORIO</BtnAddRamdon>
+         </div>
+         <div className="logout">
+            <button onClick={() => {handleLogout()}}>LOGOUT</button>
          </div>
       </DivSearchBar>
       

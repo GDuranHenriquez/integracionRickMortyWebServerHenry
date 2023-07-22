@@ -1,4 +1,4 @@
-import { ADD_FAV, REMOVE_FAV, ORDER, FILTER, FIRTER_RESET } from "./types";
+import { ADD_FAV, ACCESS, ORDER, FILTER, FIRTER_RESET, ADD_CHARACTER, NEW_CHARACTERS } from "./types";
 
 import axios from "axios";
 
@@ -57,3 +57,24 @@ export function filterReset(){
     type: FIRTER_RESET,
   }
 };
+
+export function Access(access){
+  return {
+    type: ACCESS,
+    payload: access,
+  }
+}
+
+export function AddCharacter(character){
+  return {
+    type: ADD_CHARACTER,
+    payload: character,
+  }
+}
+
+export function NewCharacters(characters){
+  return {
+    type: NEW_CHARACTERS,
+    payload: characters,
+  }
+}

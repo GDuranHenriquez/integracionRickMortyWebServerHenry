@@ -144,6 +144,7 @@ function Card(props){
 
       const dispatch = useDispatch(); // CREO UN DISPATCH
       const myFavorites = useSelector((state) => state.myFavorites); // ME TRAIGO "favorites" DEL GLOBAL
+      
 
       const id = data.id;
       const [isFav, setIsFav] = useState(false);
